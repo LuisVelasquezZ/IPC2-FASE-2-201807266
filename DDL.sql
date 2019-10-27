@@ -30,7 +30,8 @@ CREATE TABLE Seccion(
     estado varchar(20) not null,
     observacion text null,
     primary key (idSeccion),
-    foreign key (idUsuario) references Usuario(idUsuario)
+    foreign key (idUsuario) references Usuario(idUsuario),
+    foreign key (idCurso) references Curso(idCurso)
 );
 
 CREATE TABLE Aisgnacion(
@@ -168,3 +169,5 @@ CREATE TABLE Opcion(
     primary key (idOpcion),
     foreign key (idInciso) references Inciso(idInciso)
 );
+
+INSERT INTO Usuario (nombre, carnet, correo, pass, tipo) VALUES ("admin", "200000000", "admin@admin.com", "admin", "Administrador")

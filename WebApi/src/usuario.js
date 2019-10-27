@@ -22,8 +22,7 @@ function createRouter(db) {
 
   router.get('/usuario', function (req, res, next) {
     db.query(
-      'SELECT idUsuario, nombre, carnet, correo, tipo FROM usuario WHERE idUsuario = ?',
-      [req.body.idUsuario],
+      'SELECT idUsuario, nombre, carnet, correo, tipo FROM usuario',
       (error, results) => {
         if (error) {
           console.log(error);
@@ -35,7 +34,36 @@ function createRouter(db) {
     );
   });
 
-  router.put('/usuario/:id', function (req, res, next) {
+  router.get('/auxiliar', function (req, res, next) {
+    db.query(
+      'SELECT idUsuario, nombre, carnet, correo FROM usuario WHERE tipo="Auxiliar"',
+      (error, results) => {
+        if (error) {
+          console.log(error);
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json(results);
+        }
+      }
+    );
+  });
+
+  router.get('/usuario/:idUsuario', function (req, res, next) {
+    db.query(
+      'SELECT idUsuario, nombre, carnet, correo, pass, tipo FROM usuario WHERE idUsuario = ?',
+      [req.params.idUsuario],
+      (error, results) => {
+        if (error) {
+          console.log(error);
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json(results);
+        }
+      }
+    );
+  });
+
+  router.put('/usuario/:idUsuario', function (req, res, next) {
     db.query(
       'UPDATE usuario SET nombre=?, carnet=?, correo=?, tipo=? WHERE idUsuario=?',
       [req.body.nombre, req.body.carnet, req.body.correo, req.body.tipo, req.params.idUsuario],
@@ -49,9 +77,11 @@ function createRouter(db) {
     );
   });
 
+  
+
   router.delete('/usuario/:idUsuario', function (req, res, next) {
     db.query(
-      'DELETE FROM usuario WHERE idUsuairo=?',
+      'DELETE  FROM usuario WHERE idUsuario=?',
       [req.params.idUsuario],
       (error) => {
         if (error) {
